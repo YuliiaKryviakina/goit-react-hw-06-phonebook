@@ -1,15 +1,30 @@
-import propTypes from "prop-types";
 import css from "./ContactList.module.css";
+import { useSelector } from "react-redux";
+import { getContactsList, getFilter } from "../../redux/contacts/selectors";
+import { deleteContact } from "../../redux/contacts/slice";
 
-export const ContactList = ({ contacts, onHandleDelete }) => (
-  <div className={css.wraperContactList}>
-    <ul className={css.contactList}>
-      {contacts.map(({ id, name, number }) => (
-        <li key={id} className={css.contactListItem}>
+import { useDispatch } from "react-redux";
+
+const ContactList = () => {
+  const contactsList = useSelector(getContactsList);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+  const onHandleDelete = (id) => {
+    dispatch(deleteContact(id));
+  };
+
+  const filteredContactsList = contactsList.filter((contact) =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    <ul className={css.list}>
+      {filteredContactsList?.map(({ id, name, number }) => (
+        <li key={id} className={css.list_item}>
           {name}: {number}{" "}
           <button
+            className={css.button}
             type="button"
-            className={css.contactListItemBtn}
             onClick={() => onHandleDelete(id)}
           >
             Delete
@@ -17,15 +32,7 @@ export const ContactList = ({ contacts, onHandleDelete }) => (
         </li>
       ))}
     </ul>
-  </div>
-);
-
-ContactList.propTypes = {
-  contacts: propTypes.arrayOf(
-    propTypes.exact({
-      id: propTypes.string.isRequired,
-      name: propTypes.string.isRequired,
-      number: propTypes.string.isRequired,
-    })
-  ),
+  );
 };
+
+export { ContactList };
