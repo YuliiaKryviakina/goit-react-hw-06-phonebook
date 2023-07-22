@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useRef } from "react";
-import { filterContact } from "redux/contacts/slice";
+import { setStatusFilter } from 'redux/filterSlice'
 import css from "./Filter.module.css";
 
 const Filter = () => {
@@ -10,7 +10,7 @@ const Filter = () => {
 
   const handleOnChange = () => {
     const input = inputRef.current.value;
-    dispatch(filterContact(input));
+    dispatch(setStatusFilter(input));
   };
 
   return (

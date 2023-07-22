@@ -1,13 +1,12 @@
 import css from "./ContactList.module.css";
 import { useSelector } from "react-redux";
-import { getContactsList, getFilter } from "../../redux/contacts/selectors";
-import { deleteContact } from "../../redux/contacts/slice";
+import { deleteContact } from "redux/contactSlice";
 
 import { useDispatch } from "react-redux";
 
-const ContactList = () => {
-  const contactsList = useSelector(getContactsList);
-  const filter = useSelector(getFilter);
+export default function ContactList() {
+  const contactsList = useSelector((state) => state.contacts.contacts);
+  const filter = useSelector((state) => state.filters.filters);
   const dispatch = useDispatch();
   const onHandleDelete = (id) => {
     dispatch(deleteContact(id));
@@ -33,6 +32,6 @@ const ContactList = () => {
       ))}
     </ul>
   );
-};
+}
 
 export { ContactList };
